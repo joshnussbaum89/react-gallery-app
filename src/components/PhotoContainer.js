@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import Photo from './Photo';
 
 const PhotoContainer = ({ title, pics }) => {
