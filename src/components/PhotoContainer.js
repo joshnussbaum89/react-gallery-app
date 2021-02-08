@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import Photo from './Photo';
 
-class PhotoContainer extends Component {
-    render() {
-        return (
-            <div className='photo-container'>
-                <h2>{this.props.title}</h2>
-                <ul>
-                    {/* loop through to display photos */}
-                    <Photo />
-                </ul>
-            </div>
-        )
-    }
+const PhotoContainer = ({ title, pics }) => {
+    // loop through to display photos
+    let pictures = pics.map((pic, i) =>
+        <Photo
+            key={i}
+            server={pic.server}
+            id={pic.id}
+            secret={pic.secret}
+        />
+    )
+
+    return (
+        <div className='photo-container'>
+            <h2>{title ? title : 'Results'}</h2>
+            <ul>
+                {pictures}
+            </ul>
+        </div>
+    )
 }
 
 export default PhotoContainer;

@@ -1,15 +1,13 @@
 import SearchForm from './SearchForm';
 import Nav from './Nav';
 import PhotoContainer from './PhotoContainer';
-import NotFound from './NotFound';
 
-const Home = () => {
+const Home = ({ pics }) => {
     return (
         <>
             <SearchForm />
             <Nav />
-            <PhotoContainer />
-            <NotFound />
+            <PhotoContainer pics={pics} />
         </>
     )
 }

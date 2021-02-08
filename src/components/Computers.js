@@ -1,8 +1,17 @@
+import SearchForm from './SearchForm';
+import Nav from './Nav';
 import PhotoContainer from './PhotoContainer';
 
-const Computers = ({ title }) => {
+const Computers = ({ title, pics }) => {
     return (
-        <PhotoContainer title={title} />
+        <>
+            <SearchForm />
+            <Nav />
+            <PhotoContainer
+                title={title}
+                pics={pics}
+            />
+        </>
     )
 }
 

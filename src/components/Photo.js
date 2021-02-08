@@ -1,7 +1,9 @@
-const Photo = () => {
+const Photo = ({ server, id, secret }) => {
     return (
         <li>
-            <img src='http://placeimg.com/640/480/any' alt='placeholder' />
+            {/* https://live.staticflickr.com/{server}/{id}_{secret}_{size - suffix}.jpg */}
+            <img src={`https://farm5.staticflickr.com/${server}/${id}_${secret}.jpg`}
+                alt='' />
         </li>
     )
 }

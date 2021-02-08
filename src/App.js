@@ -29,7 +29,8 @@ class App extends Component {
     this.state = {
       cats: [],
       dogs: [],
-      computers: []
+      computers: [],
+      loading: true
     }
   }
 
@@ -38,7 +39,10 @@ class App extends Component {
     fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`)
       .then(response => response.json())
       .then(responseData => {
-        this.setState({ cats: responseData.photos.photo });
+        this.setState({
+          cats: responseData.photos.photo,
+          loading: false
+        });
       })
       .catch(error => {
         console.log('Error fetching and parsing data', error);
@@ -48,7 +52,10 @@ class App extends Component {
     fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`)
       .then(response => response.json())
       .then(responseData => {
-        this.setState({ dogs: responseData.photos.photo });
+        this.setState({
+          dogs: responseData.photos.photo,
+          loading: false
+        });
       })
       .catch(error => {
         console.log('Error fetching and parsing data', error);
@@ -58,7 +65,10 @@ class App extends Component {
     fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=computers&per_page=24&format=json&nojsoncallback=1`)
       .then(response => response.json())
       .then(responseData => {
-        this.setState({ computers: responseData.photos.photo });
+        this.setState({
+          computers: responseData.photos.photo,
+          loading: false
+        });
       })
       .catch(error => {
         console.log('Error fetching and parsing data', error);
@@ -68,13 +78,25 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div className='container'>
-          <Route exact path='/' component={Home} />
-          {/* use 'render' instead of 'component' if you want to pass props to component */}
-          <Route path='/cats' render={() => <Cats title='Cats' />} />
-          <Route path='/dogs' render={() => <Dogs title='Dogs' />} />
-          <Route path='/computers' render={() => <Computers title='Computers' />} />
-        </div>
+        {
+          this.state.loading
+            ? <h1>Loading...</h1>
+            :
+            <div className='container'>
+              <Route exact path='/' render={() =>
+                <Home pics={this.state.cats} />
+              } />
+              <Route path='/cats' render={() =>
+                <Cats title='Cats' pics={this.state.cats} />
+              } />
+              <Route path='/dogs' render={() =>
+                <Dogs title='Dogs' pics={this.state.dogs} />
+              } />
+              <Route path='/computers' render={() =>
+                <Computers title='Computers' pics={this.state.computers} />
+              } />
+            </div>
+        }
       </BrowserRouter>
     );
   }
@@ -86,9 +108,8 @@ export default App;
 
 /* NOTES */
 
-// https://live.staticflickr.com/{server - id}/{id}_{secret}_{size - suffix}.jpg
 // https://farm5.staticflickr.com/4334/37032996241_4c16a9b530.jpg
 
-// let serverId = this.state.pics.server;
-// let id = this.state.pics.id;
-// let secret = this.state.pics.secret;
+// let serverId = this.state.pics.server; 65535
+// let id = this.state.pics.id; 50922672946
+// let secret = this.state.cats.secret; ef4512a18d
