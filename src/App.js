@@ -4,29 +4,24 @@ import {
   Route
 } from 'react-router-dom';
 
-
 // Import Components
 import Home from './components/Home';
 import Cats from './components/Cats';
 import Dogs from './components/Dogs';
+import SearchForm from './components/SearchForm';
+import Nav from './components/Nav'
 import Computers from './components/Computers';
-
-
-// import SearchForm from './components/SearchForm';
-// import Nav from './components/Nav';
-// import PhotoContainer from './components/PhotoContainer';
-// import NotFound from './components/NotFound';
-
 
 // Flickr API
 import apiKey from './config';
-// 8ceb864b741e17a22cd6f8b8292b1a00
+
 
 class App extends Component {
 
   constructor() {
     super();
     this.state = {
+      searchResults: [],
       cats: [],
       dogs: [],
       computers: [],
@@ -75,7 +70,27 @@ class App extends Component {
       })
   }
 
+  /*
+    This works, but now you need to create a SearchResults route + Component.
+    This includes React Router and building a new component called <SearchResults />
+  */
+  searchFlickr = (query) => {
+    // get tags
+    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
+      .then(response => response.json())
+      .then(responseData => {
+        this.setState({
+          searchResults: responseData.photos.photo,
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log('Error fetching and parsing data', error);
+      })
+  }
+
   render() {
+    console.log(this.state.cats)
     return (
       <BrowserRouter>
         {
@@ -84,16 +99,31 @@ class App extends Component {
             :
             <div className='container'>
               <Route exact path='/' render={() =>
-                <Home pics={this.state.cats} />
+                <>
+                  <SearchForm onSearch={this.searchFlickr} />
+                  <Home pics={this.state.cats} />
+                </>
               } />
               <Route path='/cats' render={() =>
-                <Cats title='Cats' pics={this.state.cats} />
+                <>
+                  <SearchForm onSearch={this.searchFlickr} />
+                  <Nav />
+                  <Cats title='Cats' pics={this.state.cats} />
+                </>
               } />
               <Route path='/dogs' render={() =>
-                <Dogs title='Dogs' pics={this.state.dogs} />
+                <>
+                  <SearchForm onSearch={this.searchFlickr} />
+                  <Nav />
+                  <Dogs title='Dogs' pics={this.state.dogs} />
+                </>
               } />
               <Route path='/computers' render={() =>
-                <Computers title='Computers' pics={this.state.computers} />
+                <>
+                  <SearchForm onSearch={this.searchFlickr} />
+                  <Nav />
+                  <Computers title='Computers' pics={this.state.computers} />
+                </>
               } />
             </div>
         }
