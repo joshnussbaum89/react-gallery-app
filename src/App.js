@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
+import {
+  BrowserRouter,
+  Route
+} from 'react-router-dom';
+
 
 // Import Components
-// import PhotoGallery from './components/PhotoGallery';
-import SearchForm from './components/SearchForm';
-import Nav from './components/Nav';
-import PhotoContainer from './components/PhotoContainer';
-import NotFound from './components/NotFound';
+import Home from './components/Home';
+import Cats from './components/Cats';
+import Dogs from './components/Dogs';
+import Computers from './components/Computers';
+
+
+// import SearchForm from './components/SearchForm';
+// import Nav from './components/Nav';
+// import PhotoContainer from './components/PhotoContainer';
+// import NotFound from './components/NotFound';
 
 
 // Flickr API
 import apiKey from './config';
-const flickrApiKey = apiKey;
 // 8ceb864b741e17a22cd6f8b8292b1a00
 
 class App extends Component {
@@ -26,7 +35,7 @@ class App extends Component {
 
   componentDidMount() {
     // cats
-    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${flickrApiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`)
+    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`)
       .then(response => response.json())
       .then(responseData => {
         this.setState({ cats: responseData.photos.photo });
@@ -36,7 +45,7 @@ class App extends Component {
       })
 
     // dogs
-    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${flickrApiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`)
+    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`)
       .then(response => response.json())
       .then(responseData => {
         this.setState({ dogs: responseData.photos.photo });
@@ -46,7 +55,7 @@ class App extends Component {
       })
 
     // computers
-    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${flickrApiKey}&tags=computers&per_page=24&format=json&nojsoncallback=1`)
+    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=computers&per_page=24&format=json&nojsoncallback=1`)
       .then(response => response.json())
       .then(responseData => {
         this.setState({ computers: responseData.photos.photo });
@@ -56,15 +65,17 @@ class App extends Component {
       })
   }
 
-
   render() {
     return (
-      <div className='container'>
-        <SearchForm />
-        <Nav />
-        <PhotoContainer />
-        <NotFound />
-      </div>
+      <BrowserRouter>
+        <div className='container'>
+          <Route exact path='/' component={Home} />
+          {/* use 'render' instead of 'component' if you want to pass props to component */}
+          <Route path='/cats' render={() => <Cats title='Cats' />} />
+          <Route path='/dogs' render={() => <Dogs title='Dogs' />} />
+          <Route path='/computers' render={() => <Computers title='Computers' />} />
+        </div>
+      </BrowserRouter>
     );
   }
 }
