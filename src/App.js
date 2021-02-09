@@ -65,17 +65,7 @@ class App extends Component {
 
   // Search Function
   searchFlickr = (query) => {
-    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
-      .then(response => response.json())
-      .then(responseData => {
-        this.setState({
-          searchResults: responseData.photos.photo,
-          loading: false
-        });
-      })
-      .catch(error => {
-        console.log('Error fetching and parsing data', error);
-      })
+    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`, 'searchResults');
   }
 
   render() {
