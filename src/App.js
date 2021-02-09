@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
   BrowserRouter,
-  Route
+  Route,
+  Switch,
 } from 'react-router-dom';
 
 // Import Components
@@ -11,6 +12,8 @@ import Dogs from './components/Dogs';
 import SearchForm from './components/SearchForm';
 import Nav from './components/Nav'
 import Computers from './components/Computers';
+import SearchResults from './components/SearchResults';
+import NotFound from './components/NotFound';
 
 // Flickr API
 import apiKey from './config';
@@ -22,46 +25,22 @@ class App extends Component {
     super();
     this.state = {
       searchResults: [],
+      home: [],
       cats: [],
       dogs: [],
       computers: [],
-      loading: true
+      loading: true,
+      pathname: ''
     }
   }
 
-  componentDidMount() {
-    // cats
-    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`)
+  // Fetch Data and setState function
+  fetchData = (string, topic) => {
+    fetch(string)
       .then(response => response.json())
       .then(responseData => {
         this.setState({
-          cats: responseData.photos.photo,
-          loading: false
-        });
-      })
-      .catch(error => {
-        console.log('Error fetching and parsing data', error);
-      })
-
-    // dogs
-    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`)
-      .then(response => response.json())
-      .then(responseData => {
-        this.setState({
-          dogs: responseData.photos.photo,
-          loading: false
-        });
-      })
-      .catch(error => {
-        console.log('Error fetching and parsing data', error);
-      })
-
-    // computers
-    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=computers&per_page=24&format=json&nojsoncallback=1`)
-      .then(response => response.json())
-      .then(responseData => {
-        this.setState({
-          computers: responseData.photos.photo,
+          [topic]: responseData.photos.photo,
           loading: false
         });
       })
@@ -70,12 +49,22 @@ class App extends Component {
       })
   }
 
-  /*
-    This works, but now you need to create a SearchResults route + Component.
-    This includes React Router and building a new component called <SearchResults />
-  */
+  componentDidMount() {
+    // home
+    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=nature&per_page=24&format=json&nojsoncallback=1`, 'home');
+
+    // cats
+    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`, 'cats')
+
+    // dogs
+    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`, 'dogs')
+
+    // computers
+    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=computers&per_page=24&format=json&nojsoncallback=1`, 'computers')
+  }
+
+  // Search Function
   searchFlickr = (query) => {
-    // get tags
     fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
       .then(response => response.json())
       .then(responseData => {
@@ -90,18 +79,17 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.cats)
     return (
       <BrowserRouter>
-        {
-          this.state.loading
-            ? <h1>Loading...</h1>
-            :
-            <div className='container'>
+        {this.state.loading
+          ? <h1>Loading...</h1>
+          :
+          <div className='container'>
+            <Switch>
               <Route exact path='/' render={() =>
                 <>
                   <SearchForm onSearch={this.searchFlickr} />
-                  <Home pics={this.state.cats} />
+                  <Home pics={this.state.home} />
                 </>
               } />
               <Route path='/cats' render={() =>
@@ -125,8 +113,17 @@ class App extends Component {
                   <Computers title='Computers' pics={this.state.computers} />
                 </>
               } />
-            </div>
-        }
+              <Route path='/searchresults' render={() =>
+                <>
+                  <SearchForm onSearch={this.searchFlickr} />
+                  <Nav />
+                  <SearchResults title='Search Results' pics={this.state.searchResults} />
+                </>
+              } />
+              <Route render={() => <NotFound onSearch={this.searchFlickr} />} />
+            </Switch>
+
+          </div>}
       </BrowserRouter>
     );
   }

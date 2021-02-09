@@ -5,7 +5,7 @@ const Home = ({ pics }) => {
     return (
         <>
             <Nav />
-            <PhotoContainer pics={pics} />
+            <PhotoContainer pics={pics}/>
         </>
     )
 }

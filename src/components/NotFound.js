@@ -1,11 +1,16 @@
-import React from 'react'
+import SearchForm from './SearchForm';
+import Nav from './Nav';
 
-const NotFound = () => {
+const NotFound = ({ onSearch }) => {
     return (
-        <li className="not-found">
-            <h3>No Results Found</h3>
-            <p>You search did not return any results. Please try again.</p>
-        </li>
+        <>
+            <SearchForm onSearch={onSearch} />
+            <Nav />
+            <li className="not-found">
+                <h3>No Results Found</h3>
+                <p>You search did not return any results. Please try again.</p>
+            </li>
+        </>
     )
 }
 

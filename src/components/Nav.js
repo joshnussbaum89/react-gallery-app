@@ -5,7 +5,6 @@ const Nav = () => {
     return (
         <nav className="main-nav">
             <ul>
-                {/* style NavLinks with .active class */}
                 <li><NavLink exact to='/'>Home</NavLink></li>
                 <li><NavLink to='/cats'>Cats</NavLink></li>
                 <li><NavLink to='/dogs'>Dogs</NavLink></li>
