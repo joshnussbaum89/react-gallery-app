@@ -3,20 +3,17 @@ import {
   BrowserRouter,
   Route,
   Switch,
+  Redirect
 } from 'react-router-dom';
 
 // Import Components
-import Home from './components/Home';
-import Cats from './components/Cats';
-import Dogs from './components/Dogs';
 import SearchForm from './components/SearchForm';
 import Nav from './components/Nav'
-import Computers from './components/Computers';
-import SearchResults from './components/SearchResults';
-import NotFound from './components/NotFound';
+import PhotoContainer from './components/PhotoContainer';
 
 // Flickr API
 import apiKey from './config';
+import NotFound from './components/NotFound';
 
 
 class App extends Component {
@@ -25,11 +22,11 @@ class App extends Component {
     super();
     this.state = {
       searchResults: [],
-      home: [],
       cats: [],
       dogs: [],
       computers: [],
-      loading: true,
+      query: '',
+      isLoading: true,
       pathname: ''
     }
   }
@@ -41,7 +38,8 @@ class App extends Component {
       .then(responseData => {
         this.setState({
           [topic]: responseData.photos.photo,
-          loading: false
+          query: topic,
+          isLoading: false
         });
       })
       .catch(error => {
@@ -50,9 +48,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // home
-    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=nature&per_page=24&format=json&nojsoncallback=1`, 'home');
-
     // cats
     this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`, 'cats')
 
@@ -68,9 +63,49 @@ class App extends Component {
     this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`, 'searchResults');
   }
 
+
+
   render() {
     return (
       <BrowserRouter>
+        <div className="container">
+          <SearchForm onSearch={this.searchFlickr} />
+          <Nav />
+          {
+            (this.state.isLoading)
+              ? <h1>Loading...</h1>
+              :
+              <Switch>
+                <Route exact path='/' >
+                  <Redirect to='/cats' />
+                </Route>
+                <Route path='/cats/' render={() => <PhotoContainer pageTitle='Cats' pics={this.state.cats} />} />
+                <Route path='/dogs/' render={() => <PhotoContainer pageTitle='Dogs' pics={this.state.dogs} />} />
+                <Route path='/computers/' render={() => <PhotoContainer pageTitle='Computers' pics={this.state.computers} />} />
+                <Route path='/searchresults/:query' render={() =>
+                  // pass props to track user navigation
+                  <PhotoContainer
+                    pics={this.state.searchResults}
+                    query={this.state.query}
+                    onSearch={this.searchFlickr}
+                  />}
+                />
+                <Route component={NotFound} />
+              </Switch>
+          }
+        </div>
+      </BrowserRouter>
+    );
+  }
+}
+
+export default App;
+
+
+
+
+
+{/* <BrowserRouter>
         {this.state.loading
           ? <h1>Loading...</h1>
           :
@@ -114,12 +149,7 @@ class App extends Component {
             </Switch>
 
           </div>}
-      </BrowserRouter>
-    );
-  }
-}
-
-export default App;
+      </BrowserRouter> */}
 
 
 

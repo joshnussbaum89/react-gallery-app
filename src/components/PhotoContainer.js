@@ -1,24 +1,39 @@
+import React, { Component } from 'react';
 import Photo from './Photo';
+import NotFound from './NotFound';
+import { withRouter } from 'react-router';
 
-const PhotoContainer = ({ title, pics }) => {
+// ({ pageTitle, pics, match, query, onSearch, location })
+
+class PhotoContainer extends Component {
     // loop through to display photos
-    let pictures = pics.map((pic, i) =>
-        <Photo
-            key={i}
-            server={pic.server}
-            id={pic.id}
-            secret={pic.secret}
-        />
-    )
 
-    return (
-        <div className='photo-container'>
-            <h2>{title ? title : 'Results'}</h2>
-            <ul>
-                {pictures}
-            </ul>
-        </div>
-    )
+    // Change state dynamically to rener photos from history
+    // state = {
+    //     results: [],
+    //     pics: []
+    // }
+
+    render() {
+        // let locationUrl = this.props.location.pathname;
+        const searchQuery = this.props.match.params.query;
+        let pictures;
+
+        (this.props.pics)
+            ? pictures = this.props.pics.map((pic, i) =>
+                <Photo key={i} server={pic.server} id={pic.id} secret={pic.secret} />)
+            : pictures = <NotFound />
+
+        return (
+            <div className='photo-container'>
+                <h2>{searchQuery ? searchQuery : this.props.pageTitle}</h2>
+                <ul>
+                    {pictures}
+                </ul>
+            </div>
+        )
+    }
+
 }
 
-export default PhotoContainer;
+export default withRouter(PhotoContainer);

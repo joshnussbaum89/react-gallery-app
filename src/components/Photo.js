@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Photo = ({ server, id, secret }) => {
     return (
         <li>
