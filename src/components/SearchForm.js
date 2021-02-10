@@ -12,7 +12,7 @@ class SearchForm extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        
+
         let searchValue = this.search.value
         this.props.onSearch(searchValue);
         let path = `/searchresults/${searchValue}`;

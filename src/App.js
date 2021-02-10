@@ -22,12 +22,10 @@ class App extends Component {
     super();
     this.state = {
       searchResults: [],
-      cats: [],
-      dogs: [],
-      computers: [],
-      query: '',
+      music: [],
+      art: [],
+      science: [],
       isLoading: true,
-      pathname: ''
     }
   }
 
@@ -38,7 +36,6 @@ class App extends Component {
       .then(responseData => {
         this.setState({
           [topic]: responseData.photos.photo,
-          query: topic,
           isLoading: false
         });
       })
@@ -48,21 +45,20 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // cats
-    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`, 'cats')
+    // music
+    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=music&per_page=24&safe_search=3&format=json&nojsoncallback=1`, 'music')
 
-    // dogs
-    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`, 'dogs')
+    // art
+    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=art&per_page=24&safe_search=3&format=json&nojsoncallback=1`, 'art')
 
-    // computers
-    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=computers&per_page=24&format=json&nojsoncallback=1`, 'computers')
+    // science
+    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=science&per_page=24&safe_search=3&format=json&nojsoncallback=1`, 'science')
   }
 
   // Search Function
   searchFlickr = (query) => {
-    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`, 'searchResults');
+    this.fetchData(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&safe_search=3&format=json&nojsoncallback=1`, 'searchResults');
   }
-
 
 
   render() {
@@ -77,17 +73,16 @@ class App extends Component {
               :
               <Switch>
                 <Route exact path='/' >
-                  <Redirect to='/cats' />
+                  <Redirect to='/music' />
                 </Route>
-                <Route path='/cats/' render={() => <PhotoContainer pageTitle='Cats' pics={this.state.cats} />} />
-                <Route path='/dogs/' render={() => <PhotoContainer pageTitle='Dogs' pics={this.state.dogs} />} />
-                <Route path='/computers/' render={() => <PhotoContainer pageTitle='Computers' pics={this.state.computers} />} />
+                <Route path='/music/' render={() => <PhotoContainer pageTitle='Music' pics={this.state.music} />} />
+                <Route path='/art/' render={() => <PhotoContainer pageTitle='art' pics={this.state.art} />} />
+                <Route path='/science/' render={() => <PhotoContainer pageTitle='science' pics={this.state.science} />} />
                 <Route path='/searchresults/:query' render={() =>
-                  // pass props to track user navigation
                   <PhotoContainer
                     pics={this.state.searchResults}
-                    query={this.state.query}
                     onSearch={this.searchFlickr}
+                    isLoading={this.state.isLoading}
                   />}
                 />
                 <Route component={NotFound} />
@@ -100,63 +95,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-
-
-
-{/* <BrowserRouter>
-        {this.state.loading
-          ? <h1>Loading...</h1>
-          :
-          <div className='container'>
-            <Switch>
-              <Route exact path='/' render={() =>
-                <>
-                  <SearchForm onSearch={this.searchFlickr} />
-                  <Home pics={this.state.home} />
-                </>
-              } />
-              <Route path='/cats' render={() =>
-                <>
-                  <SearchForm onSearch={this.searchFlickr} />
-                  <Nav />
-                  <Cats title='Cats' pics={this.state.cats} />
-                </>
-              } />
-              <Route path='/dogs' render={() =>
-                <>
-                  <SearchForm onSearch={this.searchFlickr} />
-                  <Nav />
-                  <Dogs title='Dogs' pics={this.state.dogs} />
-                </>
-              } />
-              <Route path='/computers' render={() =>
-                <>
-                  <SearchForm onSearch={this.searchFlickr} />
-                  <Nav />
-                  <Computers title='Computers' pics={this.state.computers} />
-                </>
-              } />
-              <Route path='/searchresults' render={() =>
-                <>
-                  <SearchForm onSearch={this.searchFlickr} />
-                  <Nav />
-                  <SearchResults title='Search Results' pics={this.state.searchResults} />
-                </>
-              } />
-              <Route render={() => <NotFound onSearch={this.searchFlickr} />} />
-            </Switch>
-
-          </div>}
-      </BrowserRouter> */}
-
-
-
-/* NOTES */
-
-// https://farm5.staticflickr.com/4334/37032996241_4c16a9b530.jpg
-
-// let serverId = this.state.pics.server; 65535
-// let id = this.state.pics.id; 50922672946
-// let secret = this.state.cats.secret; ef4512a18d
