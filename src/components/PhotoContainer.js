@@ -13,16 +13,16 @@ class PhotoContainer extends Component {
     //     results: [],
     //     pics: []
     // }
-
+    
     render() {
         // let locationUrl = this.props.location.pathname;
         const searchQuery = this.props.match.params.query;
         let pictures;
-
-        (this.props.pics)
+        
+        (this.props.pics.length > 0)
             ? pictures = this.props.pics.map((pic, i) =>
                 <Photo key={i} server={pic.server} id={pic.id} secret={pic.secret} />)
-            : pictures = <NotFound />
+            : pictures = <NotFound searchQuery={searchQuery}/>
 
         return (
             <div className='photo-container'>

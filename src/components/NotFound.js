@@ -1,11 +1,12 @@
 import React from 'react';
 
-const NotFound = ({ onSearch }) => {
+const NotFound = ({ searchQuery }) => {
+    console.log(searchQuery)
     return (
         <>
             <li className="not-found">
-                <h3>No Results Found</h3>
-                <p>You search did not return any results. Please try again.</p>
+                <h3>{searchQuery ? searchQuery : 'Your search'} didn't yield any results</h3>
+                <p>Please try again.</p>
             </li>
         </>
     )
