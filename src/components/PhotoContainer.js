@@ -3,7 +3,9 @@ import Photo from './Photo';
 import NoMatches from './NoMatches';
 import { withRouter } from 'react-router';
 
+// Container to hold photo rendering logic 
 class PhotoContainer extends Component {
+
     // Track user navigation via < and > browser arrows 
     componentDidUpdate(prevProps) {
         const locationIsASearch = this.props.location.pathname.includes('searchresults');
@@ -16,15 +18,11 @@ class PhotoContainer extends Component {
 
     render() {
         const searchQuery = this.props.match.params.query;
-        let pictures;
-
         // Test if there are photos to return
         let photoContainerDisplay = (this.props.pics.length > 0);
-
         // Loop through to display photos
-        pictures = this.props.pics.map((pic, i) =>
+        let pictures = this.props.pics.map((pic, i) =>
             <Photo key={i} server={pic.server} id={pic.id} secret={pic.secret} />)
-
         // If search returns results, print to page. Otherwise, display NotFound page
         if (photoContainerDisplay) {
             return (

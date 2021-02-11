@@ -1,3 +1,4 @@
+// Photo with dynamically inputed data to display search results
 const Photo = ({ server, id, secret }) => {
     return (
         <li>

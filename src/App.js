@@ -25,7 +25,7 @@ class App extends Component {
       music: [],
       art: [],
       science: [],
-      isLoading: true,
+      isLoading: true
     }
   }
 
@@ -42,6 +42,11 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error);
       })
+      .then(
+        this.setState({
+          isLoading: true
+        })
+      )
   }
 
   componentDidMount() {
@@ -75,9 +80,27 @@ class App extends Component {
                 <Route exact path='/' >
                   <Redirect to='/music' />
                 </Route>
-                <Route path='/music/' render={() => <PhotoContainer pageTitle='Music' pics={this.state.music} />} />
-                <Route path='/art/' render={() => <PhotoContainer pageTitle='art' pics={this.state.art} />} />
-                <Route path='/science/' render={() => <PhotoContainer pageTitle='science' pics={this.state.science} />} />
+                <Route path='/music/' render={() =>
+                  <PhotoContainer
+                    pageTitle='Music'
+                    pics={this.state.music}
+                    isLoading={this.state.isLoading}
+                  />}
+                />
+                <Route path='/art/' render={() =>
+                  <PhotoContainer
+                    pageTitle='art'
+                    pics={this.state.art}
+                    isLoading={this.state.isLoading}
+                  />}
+                />
+                <Route path='/science/' render={() =>
+                  <PhotoContainer
+                    pageTitle='science'
+                    pics={this.state.science}
+                    isLoading={this.state.isLoading}
+                  />}
+                />
                 <Route path='/searchresults/:query' render={() =>
                   <PhotoContainer
                     pics={this.state.searchResults}
@@ -90,6 +113,7 @@ class App extends Component {
           }
         </div>
       </BrowserRouter>
+
     );
   }
 }

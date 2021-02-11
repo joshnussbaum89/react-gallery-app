@@ -2,14 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 
 class SearchForm extends Component {
-    state = {
-        searchText: ''
-    }
-
-    onSearchChange = e => {
-        this.setState({ searchText: e.target.value });
-    }
-
+    /* 
+        1. Search Flikr based on users search input, update browser history to track user navigation
+        2. Clear <input> field
+    */
     handleSubmit = e => {
         e.preventDefault();
 
@@ -28,7 +24,6 @@ class SearchForm extends Component {
                     type="search"
                     name="search"
                     placeholder="Search"
-                    onChange={this.onSearchChange}
                     ref={(input) => this.search = input}
                     required
                 />
