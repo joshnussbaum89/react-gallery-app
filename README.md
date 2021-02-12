@@ -1,10 +1,14 @@
 # Treehouse FS JavaScript Unit-07 React Gallery App
 
-
+This was built for unit-07 of the Full Stack JavaScript TechDegree.
 
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## In Order to Run App Correctly
+
+You will need to create a `config.js` file in the project `src` folder with your own non-commercial API Key from Flikr. Follow [this link](https://www.flickr.com/services/apps/create/apply/) to get an API Key. 
 
 ## Available Scripts
 

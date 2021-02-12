@@ -1,8 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
+* {
+  font-family: "Space Mono", monospace;
+}
+
 body {
   text-align: center;
-  font-family: "Space Mono", monospace;
   color: #3f4850;
 }
 
@@ -26,6 +29,49 @@ a {
   text-decoration: none;
 }
 
+.clock {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.clock h1 {
+  margin: 0 0 0 1rem;
+}
+
+.clockBtn {
+  text-transform: capitalize;
+  font-size: 1rem;
+  background: #0c0df7;
+  color: #fff;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  margin-bottom: 3rem;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.clockBtnOpen {
+  text-transform: capitalize;
+  font-size: 1rem;
+  background: #0c0df7;
+  color: #fff;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  margin-bottom: 3rem;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.clockBtn:hover,
+.clockBtnOpen:hover {
+  background-color: #000ea5;
+}
+
 .search-form {
   max-width: 460px;
   display: flex;
@@ -34,11 +80,11 @@ a {
 
 .search-form button {
   outline: none;
-  /* background-color: #438bbd; */
   background: #0c0df7;
   border: none;
   padding: 0px 15px;
   border-radius: 0 0.35em 0.35em 0;
+  transition: 0.2s;
   cursor: pointer;
 }
 
@@ -60,18 +106,16 @@ input {
 
 .main-nav a {
   display: block;
-  /* background: #438bbd; */
   background: #0c0df7;
   border-radius: 3px;
   padding: 5px;
   color: #fff;
+  transition: 0.2s;
 }
 
 .main-nav .active,
 .main-nav a:hover,
 .search-form button:hover {
-  /* style this for active links and hovering */
-  /* background-color: #275270; */
   background-color: #000ea5;
 }
 

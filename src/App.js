@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 // Import Components
+import Clock from './components/Clock';
 import SearchForm from './components/SearchForm';
 import Nav from './components/Nav'
 import PhotoContainer from './components/PhotoContainer';
@@ -18,15 +19,12 @@ import NotFound from './components/NotFound';
 
 class App extends Component {
 
-  constructor() {
-    super();
-    this.state = {
-      searchResults: [],
-      music: [],
-      art: [],
-      science: [],
-      isLoading: true
-    }
+  state = {
+    searchResults: [],
+    music: [],
+    art: [],
+    science: [],
+    isLoading: true
   }
 
   // Fetch Data and setState function
@@ -39,14 +37,14 @@ class App extends Component {
           isLoading: false
         });
       })
-      .catch(error => {
-        console.log('Error fetching and parsing data', error);
-      })
       .then(
         this.setState({
           isLoading: true
         })
       )
+      .catch(error => {
+        console.log('Error fetching and parsing data', error);
+      })
   }
 
   componentDidMount() {
@@ -70,6 +68,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="container">
+          <Clock />
           <SearchForm onSearch={this.searchFlickr} />
           <Nav />
           {
